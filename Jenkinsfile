@@ -70,6 +70,13 @@ pipeline {
                 '''
             }
         }
+        stage('Debug Workspace') {
+            steps {
+                sh 'pwd'
+                sh 'ls -la'
+        s       h 'ls -la scripts || true'
+            }
+        }
 /*
         stage('Unit Tests') {
             steps {
