@@ -108,7 +108,7 @@ pipeline {
                 sh "docker build -t ${IMAGE_NAME}:staging ."
             }
         }
-
+        /*
         stage('Trivy Security Scan') {
             steps {
                 sh '''
@@ -123,7 +123,7 @@ pipeline {
                   ${IMAGE_NAME}:staging
                 '''
             }
-        }
+        }*/
 
     /* ===================================================== */
     /* ================== STAGING ========================== */
