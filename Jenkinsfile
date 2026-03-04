@@ -74,7 +74,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -la'
-        s       h 'ls -la scripts || true'
+                 sh 'ls -la scripts || true'
             }
         }
 /*
