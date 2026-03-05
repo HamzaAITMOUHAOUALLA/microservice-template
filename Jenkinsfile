@@ -42,7 +42,7 @@ pipeline {
                     url: "https://${SOURCE_REPO}"
             }
         }
-    stages {
+
 
         stage('Skip Bot Commit') {
             steps {
