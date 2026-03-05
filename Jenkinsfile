@@ -178,7 +178,7 @@ pipeline {
         stage('Calculate Version') {
             steps {
                 sh '''
-                chmod +x scripts/calculate-version.sh
+                chmod +x calculate-version.sh
                 scripts/calculate-version.sh
                 '''
             }
