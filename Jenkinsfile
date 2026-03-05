@@ -196,6 +196,7 @@ pipeline {
                     scripts/push-image.sh
                     '''
                // }
+               
             }
         }
 
