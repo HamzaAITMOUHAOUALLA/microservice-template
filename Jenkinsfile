@@ -14,6 +14,11 @@ pipeline {
         HARBOR_REGISTRY   = "${env.HARBOR_REGISTRY}"
         HARBOR_PROJECT    = "${env.HARBOR_PROJECT}"
 
+        /* ================= TEMPLATE ================= */
+
+        TEMPLATE_REPO   = "${env.TEMPLATE_REPO}"
+        TEMPLATE_BRANCH = "${env.TEMPLATE_BRANCH ?: 'main'}"
+
         /* ================= GITOPS ================= */
 
         GITOPS_REPO       = "${env.GITOPS_REPO}"
@@ -159,8 +164,8 @@ pipeline {
         stage('Checkout Template') {
             steps {
                 dir('template') {
-                    git branch: 'main',
-                    url: 'https://github.com/HamzaAITMOUHAOUALLA/microservice-template'
+                    git branch: "${TEMPLATE_BRANCH}",
+                    url: "https://${TEMPLATE_REPO}"
                 }
             }
         }       
