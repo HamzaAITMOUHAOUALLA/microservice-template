@@ -47,10 +47,16 @@ pipeline {
         stage('Skip Bot Commit') {
             steps {
                 script {
-                    def author = sh(script: "git log -1 --pretty=%an", returnStdout: true).trim()
-                    if (author == "ci@jenkins.com") {
+                    def author = sh(
+                        script: "git log -1 --pretty=%an",
+                        returnStdout: true
+                    ).trim()
+
+                    echo "Commit author: ${author}"
+
+                    if (author == "Jenkins CI") {
                         currentBuild.result = 'NOT_BUILT'
-                        error("Skipping bot commit")
+                        error("Build triggered by Jenkins bot, skipping pipeline")
                     }
                 }
             }
