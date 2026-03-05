@@ -178,7 +178,7 @@ pipeline {
         stage('Calculate Version') {
             steps {
                 sh '''
-                chmod +x calculate-version.sh
+                chmod +x scripts//calculate-version.sh
                 scripts/calculate-version.sh
                 '''
             }
@@ -186,11 +186,11 @@ pipeline {
 
         stage('Build & Push Production Image') {
             steps {
-                withCredentials([usernamePassword(
+               /* withCredentials([usernamePassword(
                     credentialsId: 'harbor-credentials',
                     usernameVariable: 'HARBOR_USER',
                     passwordVariable: 'HARBOR_PASS'
-                )]) {
+                )]) {*/
                     sh '''
                     chmod +x scripts/push-image.sh
                     scripts/push-image.sh

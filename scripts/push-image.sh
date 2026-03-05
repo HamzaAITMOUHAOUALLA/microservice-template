@@ -15,12 +15,12 @@ echo "Building ${FULL_IMAGE}..."
 
 docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
 
-docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${FULL_IMAGE}
+#docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${FULL_IMAGE}
 
-echo "$HARBOR_PASS" | docker login ${HARBOR_REGISTRY} -u "$HARBOR_USER" --password-stdin
+#echo "$HARBOR_PASS" | docker login ${HARBOR_REGISTRY} -u "$HARBOR_USER" --password-stdin
 
-docker push ${FULL_IMAGE}
+#docker push ${FULL_IMAGE}
 
-docker logout ${HARBOR_REGISTRY}
+#docker logout ${HARBOR_REGISTRY}
 
-echo "Image pushed: ${FULL_IMAGE}"
+#echo "Image pushed: ${FULL_IMAGE}"
