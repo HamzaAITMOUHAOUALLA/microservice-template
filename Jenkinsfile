@@ -156,17 +156,19 @@ pipeline {
                 '''
             }
         }
-       stage('Checkout Template') {
+        stage('Checkout Template') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/HamzaAITMOUHAOUALLA/microservice-template'
+                dir('template') {
+                    git branch: 'main',
+                    url: 'https://github.com/HamzaAITMOUHAOUALLA/microservice-template'
+                }
             }
-        }        
+        }       
         stage('E2E Tests') {
             steps {
                 sh '''
                 chmod +x scripts/e2e-test.sh
-                scripts/e2e-test.sh
+                template/scripts/e2e-test.sh
                 '''
             }
         }
@@ -179,7 +181,7 @@ pipeline {
             steps {
                 sh '''
                 chmod +x scripts//calculate-version.sh
-                scripts/calculate-version.sh
+                template/scripts/calculate-version.sh
                 '''
             }
         }
@@ -193,10 +195,10 @@ pipeline {
                 )]) {*/
                     sh '''
                     chmod +x scripts/push-image.sh
-                    scripts/push-image.sh
+                    template/scripts/push-image.sh
                     '''
                // }
-               
+
             }
         }
 
@@ -209,7 +211,7 @@ pipeline {
                 )]) {
                     sh '''
                     chmod +x scripts/update-gitops.sh
-                    scripts/update-gitops.sh
+                    template/scripts/update-gitops.sh
                     '''
                 }
             }
@@ -224,7 +226,7 @@ pipeline {
                 )]) {
                     sh '''
                     chmod +x scripts/persist-version.sh
-                    scripts/persist-version.sh
+                    template/scripts/persist-version.sh
                     '''
                 }
             }
