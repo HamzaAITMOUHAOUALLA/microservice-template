@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
 
-: "${GITOPS_REPO:?GITOPS_REPO not set}"
-: "${GITOPS_PATH:?GITOPS_PATH not set}"
-: "${GIT_USER:?GIT_USER not set}"
-: "${GIT_PASS:?GIT_PASS not set}"
-: "${HARBOR_REGISTRY:?HARBOR_REGISTRY not set}"
-: "${HARBOR_PROJECT:?HARBOR_PROJECT not set}"
+#: "${GITOPS_REPO:?GITOPS_REPO not set}"
+#"": "${GITOPS_PATH:?GITOPS_PATH not set}"
+#: "${GIT_USER:?GIT_USER not set}"
+#: "${GIT_PASS:?GIT_PASS not set}"
+#: "${HARBOR_REGISTRY:?HARBOR_REGISTRY not set}"
+#: "${HARBOR_PROJECT:?HARBOR_PROJECT not set}"
 : "${IMAGE_NAME:?IMAGE_NAME not set}"
 
 source .image_env
 
-FULL_IMAGE="${HARBOR_REGISTRY}/${HARBOR_PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
+FULL_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
 
 rm -rf gitops-repo
 
