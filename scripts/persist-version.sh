@@ -15,4 +15,8 @@ git config user.name "Jenkins CI"
 git add VERSION
 git commit -m "Bump version to v$NEW_VERSION [skip ci]" || echo "No change"
 
+# 🔹 sync avec github
+git pull origin main --rebase
+
+# 🔹 push
 git push https://${GIT_USER}:${GIT_PASS}@${SOURCE_REPO} main
