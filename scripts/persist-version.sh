@@ -5,26 +5,23 @@ set -e
 : "${GIT_PASS:?GIT_PASS not set}"
 : "${SOURCE_REPO:?SOURCE_REPO not set}"
 
+# récupérer version calculée
 NEW_VERSION=$(cat .new_version)
 
+echo "Persisting version: $NEW_VERSION"
+
+# mettre à jour fichier VERSION
+echo "$NEW_VERSION" > VERSION
+
+# config git
 git config user.email "ci@jenkins.com"
 git config user.name "Jenkins CI"
 
-# 🔹 nettoyer workspace
-git reset --hard
-git clean -fd
-
-# 🔹 se mettre sur main
-git checkout main
-
-# 🔹 récupérer la dernière version
-git pull origin main --rebase
-
-# 🔹 modifier version
-echo $NEW_VERSION > VERSION
-
+# commit
 git add VERSION
 git commit -m "Bump version to v$NEW_VERSION [skip ci]" || echo "No change"
 
-# 🔹 push
+# push
 git push https://${GIT_USER}:${GIT_PASS}@${SOURCE_REPO} main
+
+echo "Version persisted successfully ✅"
