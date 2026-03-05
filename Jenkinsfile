@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     environment {
 
         /* ================= GLOBAL ================= */
@@ -42,6 +42,25 @@ pipeline {
                     url: "https://${SOURCE_REPO}"
             }
         }
+        stage('Skip CI Check') {
+            steps {
+                script {
+
+                    def commitMessage = sh(
+                        script: "git log -1 --pretty=%B",
+                        returnStdout: true
+                    ).trim()
+
+                    echo "Commit message: ${commitMessage}"
+
+                    if (commitMessage.contains("[skip ci]")) {
+                        echo "Skipping pipeline because of [skip ci]"
+                        currentBuild.result = 'NOT_BUILT'
+                        error("Pipeline skipped")
+                    }
+                }
+            }
+        }
 
         stage('Verify Variables') {
             steps {
@@ -74,13 +93,6 @@ pipeline {
                   mvn clean package -DskipTests
                 fi
                 '''
-            }
-        }
-        stage('Debug Workspace') {
-            steps {
-                sh 'pwd'
-                sh 'ls -la'
-                 sh 'ls -la scripts || true'
             }
         }
 /*
