@@ -51,6 +51,7 @@ pipeline {
                         'HARBOR_REGISTRY',
                         'HARBOR_PROJECT',
                         'GITOPS_REPO',
+                        'TEMPLATE_REPO',
                         'GITOPS_PATH',
                         'SOURCE_REPO'
                     ]
