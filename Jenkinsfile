@@ -195,7 +195,7 @@ pipeline {
                     chmod +x scripts/push-image.sh
                     scripts/push-image.sh
                     '''
-                }
+               // }
             }
         }
 
