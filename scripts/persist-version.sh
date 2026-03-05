@@ -10,14 +10,21 @@ NEW_VERSION=$(cat .new_version)
 git config user.email "ci@jenkins.com"
 git config user.name "Jenkins CI"
 
-#  synchroniser avant modification
-git pull origin main --rebase || true
+# 🔹 nettoyer workspace
+git reset --hard
+git clean -fd
 
-#  update version
+# 🔹 se mettre sur main
+git checkout main
+
+# 🔹 récupérer la dernière version
+git pull origin main --rebase
+
+# 🔹 modifier version
 echo $NEW_VERSION > VERSION
 
 git add VERSION
 git commit -m "Bump version to v$NEW_VERSION [skip ci]" || echo "No change"
 
-#  push
+# 🔹 push
 git push https://${GIT_USER}:${GIT_PASS}@${SOURCE_REPO} main
