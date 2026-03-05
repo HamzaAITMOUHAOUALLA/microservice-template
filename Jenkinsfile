@@ -167,7 +167,7 @@ pipeline {
         stage('E2E Tests') {
             steps {
                 sh '''
-                chmod +x scripts/e2e-test.sh
+                chmod +x template/scripts/e2e-test.sh
                 template/scripts/e2e-test.sh
                 '''
             }
@@ -180,7 +180,7 @@ pipeline {
         stage('Calculate Version') {
             steps {
                 sh '''
-                chmod +x scripts//calculate-version.sh
+                chmod +x template/scripts//calculate-version.sh
                 template/scripts/calculate-version.sh
                 '''
             }
@@ -194,7 +194,7 @@ pipeline {
                     passwordVariable: 'HARBOR_PASS'
                 )]) {*/
                     sh '''
-                    chmod +x scripts/push-image.sh
+                    chmod +x template/scripts/push-image.sh
                     template/scripts/push-image.sh
                     '''
                // }
@@ -210,7 +210,7 @@ pipeline {
                     passwordVariable: 'GIT_PASS'
                 )]) {
                     sh '''
-                    chmod +x scripts/update-gitops.sh
+                    chmod +x template/scripts/update-gitops.sh
                     template/scripts/update-gitops.sh
                     '''
                 }
@@ -225,7 +225,7 @@ pipeline {
                     passwordVariable: 'GIT_PASS'
                 )]) {
                     sh '''
-                    chmod +x scripts/persist-version.sh
+                    chmod +x template/scripts/persist-version.sh
                     template/scripts/persist-version.sh
                     '''
                 }
