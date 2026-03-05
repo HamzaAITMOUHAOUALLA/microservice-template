@@ -37,12 +37,6 @@ pipeline {
                     url: "https://${SOURCE_REPO}"
             }
         }
-        stage('Checkout Template') {
-            steps {
-                git branch: 'main',
-                url: 'https://github.com/HamzaAITMOUHAOUALLA/microservice-template'
-            }
-        }
 
         stage('Verify Variables') {
             steps {
@@ -162,7 +156,12 @@ pipeline {
                 '''
             }
         }
-
+       stage('Checkout Template') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/HamzaAITMOUHAOUALLA/microservice-template'
+            }
+        }        
         stage('E2E Tests') {
             steps {
                 sh '''
