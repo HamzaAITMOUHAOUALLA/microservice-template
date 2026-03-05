@@ -42,21 +42,15 @@ pipeline {
                     url: "https://${SOURCE_REPO}"
             }
         }
-        stage('Skip CI Check') {
+    stages {
+
+        stage('Skip Bot Commit') {
             steps {
                 script {
-
-                    def commitMessage = sh(
-                        script: "git log -1 --pretty=%B",
-                        returnStdout: true
-                    ).trim()
-
-                    echo "Commit message: ${commitMessage}"
-
-                    if (commitMessage.contains("[skip ci]")) {
-                        echo "Skipping pipeline because of [skip ci]"
+                    def author = sh(script: "git log -1 --pretty=%an", returnStdout: true).trim()
+                    if (author == "ci@jenkins.com") {
                         currentBuild.result = 'NOT_BUILT'
-                        error("Pipeline skipped")
+                        error("Skipping bot commit")
                     }
                 }
             }
