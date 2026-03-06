@@ -8,7 +8,7 @@ BASE_URL="http://${CONTAINER_NAME}:8080/api/files"
 
 echo "Waiting for application..."
 
-for i in $(seq 1 12)
+for i in $(seq 1 15)
 do
   if curl -s ${BASE_URL} > /dev/null; then
     echo "Application ready ✅"
