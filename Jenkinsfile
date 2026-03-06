@@ -92,6 +92,43 @@ pipeline {
                 '''
             }
         }
+
+
+        stage('Test & Quality Checks') {
+            parallel {
+
+                stage('Unit Tests') {
+                    steps {
+                        sh '''
+                        if [ -f mvnw ]; then
+                        ./mvnw test
+                        else
+                        mvn test
+                        fi
+                        '''
+                    }
+                }
+
+                stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv('SonarQubeServer') {
+                            withCredentials([string(credentialsId: 'jenkinstoken', variable: 'SONAR_TOKEN')]) {
+                                sh '''
+                                if [ -f mvnw ]; then
+                                ./mvnw sonar:sonar -Dsonar.login=$SONAR_TOKEN
+                                else
+                                mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN
+                                fi
+                                '''
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+
         /*
         stage('Unit Tests') {
             steps {
