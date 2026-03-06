@@ -175,7 +175,7 @@ pipeline {
                         ${IMAGE_NAME}:staging
                         '''*/
                     steps {
-                        sh'echo" trivy scan"
+                        sh'echo" trivy scan"'
                     
                     }
                 }
