@@ -127,13 +127,14 @@ pipeline {
                             }
                         }
                     }*/
-
-                }
-                 steps {
+                steps {
                         sh 'echo "sonarqube analysis" '
                     
                     }
 
+
+                }
+                 
             }
         }
                 stage('Checkout Template') {
