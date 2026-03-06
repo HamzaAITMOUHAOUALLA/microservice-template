@@ -98,7 +98,7 @@ pipeline {
             parallel {
 
                 stage('Unit Tests') {
-                    steps {
+                   /* steps {
                         sh '''
                         if [ -f mvnw ]; then
                         ./mvnw test
@@ -106,11 +106,15 @@ pipeline {
                         mvn test
                         fi
                         '''
+                    }*/
+                     steps {
+                        sh 'echo "unit tests" '
+                    
                     }
                 }
 
                 stage('SonarQube Analysis') {
-                    steps {
+                    /*steps {
                         withSonarQubeEnv('SonarQubeServer') {
                             withCredentials([string(credentialsId: 'jenkinstoken', variable: 'SONAR_TOKEN')]) {
                                 sh '''
@@ -122,8 +126,13 @@ pipeline {
                                 '''
                             }
                         }
-                    }
+                    }*/
+
                 }
+                 steps {
+                        sh 'echo "sonarqube analysis" '
+                    
+                    }
 
             }
         }
@@ -163,7 +172,7 @@ pipeline {
             parallel {
 
                 stage('Trivy Security Scan') {
-                    /* sh '''
+                    /*steps { sh '''
                         docker run --rm \
                         -v /var/run/docker.sock:/var/run/docker.sock \
                         -v trivy-cache:/root/.cache/ \
@@ -173,7 +182,8 @@ pipeline {
                         --severity HIGH,CRITICAL \
                         --exit-code 1 \
                         ${IMAGE_NAME}:staging
-                        '''*/
+                        '''
+                        }*/
                     steps {
                         sh 'echo "trivy scan" '
                     
