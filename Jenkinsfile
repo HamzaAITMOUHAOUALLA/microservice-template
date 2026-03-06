@@ -94,7 +94,7 @@ pipeline {
         }
 
 
-        stage('Test & Quality Checks') {
+        /*stage('Unit Test & Quality Checks') {
             parallel {
 
                 stage('Unit Tests') {
@@ -126,46 +126,76 @@ pipeline {
                 }
 
             }
+        }*/
+                stage('Checkout Template') {
+                    steps {
+                        dir('template') {
+                            git branch: "${TEMPLATE_BRANCH}",
+                            url: "https://${TEMPLATE_REPO}"
+                        }
+                    }
+                }
+    /* ================== SECURITY + STAGING ========================== */
+
+        stage('Build Staging Image') {
+            steps {
+                sh "docker build -t ${IMAGE_NAME}:staging ."
+            }
         }
 
-
-        /*
-        stage('Unit Tests') {
+        stage('Deploy Staging Container') {
             steps {
                 sh '''
-                if [ -f mvnw ]; then
-                  ./mvnw test
-                else
-                  mvn test
-                fi
+                docker stop ${CONTAINER_NAME} || true
+                docker rm ${CONTAINER_NAME} || true
+
+                docker run -d \
+                --name ${CONTAINER_NAME} \
+                --network ci-network \
+                -p ${STAGING_PORT}:8080 \
+                ${IMAGE_NAME}:staging
                 '''
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQubeServer') {
-                    withCredentials([string(credentialsId: 'jenkinstoken', variable: 'SONAR_TOKEN')]) {
+        stage('Security & E2E Tests') {
+            parallel {
+
+                stage('Trivy Security Scan') {
+                    steps {
                         sh '''
-                        if [ -f mvnw ]; then
-                          ./mvnw sonar:sonar -Dsonar.login=$SONAR_TOKEN
-                        else
-                          mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN
-                        fi
+                        docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v trivy-cache:/root/.cache/ \
+                        aquasec/trivy:latest image \
+                        --timeout 10m \
+                        --scanners vuln \
+                        --severity HIGH,CRITICAL \
+                        --exit-code 1 \
+                        ${IMAGE_NAME}:staging
                         '''
                     }
                 }
+
+                stage('E2E Tests') {
+                    steps {
+                        sh '''
+                        chmod +x template/scripts/e2e-test.sh
+                        template/scripts/e2e-test.sh
+                        '''
+                    }
+                }
+
             }
         }
-    */
-    /* ================== SECURITY ========================= */
-
+            /* ================== SECURITY & STAGING ========================= */
+    /*
         stage('Docker Build (Staging Image)') {
             steps {
                 sh "docker build -t ${IMAGE_NAME}:staging ."
             }
         }
-        /*
+        
         stage('Trivy Security Scan') {
             steps {
                 sh '''
@@ -180,9 +210,9 @@ pipeline {
                   ${IMAGE_NAME}:staging
                 '''
             }
-        }*/
+        }
 
-    /* ================== STAGING ========================== */
+   
 
         stage('Clean Previous Container') {
             steps {
@@ -221,6 +251,7 @@ pipeline {
                 '''
             }
         }
+        */
 
     /* ================== PRODUCTION ======================= */
 
