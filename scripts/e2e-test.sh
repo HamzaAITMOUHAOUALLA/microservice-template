@@ -32,7 +32,7 @@ do
   sleep $SLEEP_TIME
 done
 
-if ! curl -fs ${BASE_URL} > /dev/null; then
+if ! curl -s ${BASE_URL} > /dev/null; then
   echo "Application failed to start ❌"
   docker logs ${CONTAINER_NAME} || true
   exit 1
@@ -51,7 +51,7 @@ echo "Test file for CI pipeline" > sample.txt
 
 echo "Uploading file..."
 
-curl -fs -F "file=@sample.txt" \
+curl -s -F "file=@sample.txt" \
      ${BASE_URL}/upload \
      -o upload.json
 
@@ -75,7 +75,7 @@ echo "File uploaded successfully. ID: $FILE_ID"
 
 echo "Processing file..."
 
-curl -fs -X POST ${BASE_URL}/process/$FILE_ID
+curl -s -X POST ${BASE_URL}/process/$FILE_ID
 
 # ===============================
 # Download processed file
@@ -83,7 +83,7 @@ curl -fs -X POST ${BASE_URL}/process/$FILE_ID
 
 echo "Downloading processed result..."
 
-curl -fs \
+curl -s \
      -o result.zip \
      ${BASE_URL}/download/$FILE_ID
 
