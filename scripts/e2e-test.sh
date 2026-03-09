@@ -23,7 +23,7 @@ echo "Waiting for application to become ready..."
 
 for i in $(seq 1 $MAX_RETRIES)
 do
-  if curl -fs ${BASE_URL} > /dev/null; then
+  if curl -s ${BASE_URL} > /dev/null; then
     echo "Application is ready ✅"
     break
   fi
